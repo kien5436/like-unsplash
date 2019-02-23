@@ -1,7 +1,7 @@
 /cache/*
-/logs
-/*
+/logs/*
 /upload/photos/*
 /upload/picture_profiles/*
 !index.html
 !.gitkeep
+
