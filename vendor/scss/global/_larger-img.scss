@@ -1,0 +1,71 @@
+.larger-img {
+	background: rgba(#000, .7);
+	bottom: 0;
+	left: 0;
+	overflow: hidden auto;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 3;
+	.fa-times {
+		color: #fff;
+		cursor: pointer;
+		position: fixed;
+		right: .5em;
+		top: .5em;
+	}
+	.figure-large {
+		background: #fff;
+		margin: 3em auto;
+		max-width: 90vw; // set by php, equal to image width
+		min-height: 100%;
+		.image { max-width: 100% }
+		.description {
+			font-size: 1.6em;
+			padding: 2em 0;
+			.row:after { @extend %clearfix; }
+			&-author { @extend %col; }
+			&-buttons {
+				@extend .description-author;
+				position: relative;
+				.figure-buttons-menu.show {
+					top: 2.5em;
+					a {font-size: 1em}
+				}
+			}
+			&-info {
+				&-1, &-2 {
+					@extend .description-author;
+					p {margin: .5em 0}
+				}
+				&:after { @extend %clearfix; }
+			}
+		}
+	}
+}
+
+@mixin larger-img-phone() {
+	.larger-img .figure-large .description {
+		&-author {width: 100%}
+		&-buttons {
+			text-align: left;
+			.btn {
+				margin-left: 0;
+				margin-right: .5em;
+			}
+		}
+	}	
+}
+
+@mixin larger-img-tablet() {
+	.larger-img .figure-large .description {
+		&-author {width: nth($col, 6)}
+		&-buttons {
+			text-align: right;
+			.btn {
+				margin-left: 0.5em;
+				margin-right: 0;
+			}
+		}
+	}	
+}

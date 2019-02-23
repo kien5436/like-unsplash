@@ -1,0 +1,21 @@
+@media #{ map-get($break-points, phone) } {
+	@include header-phone;
+	@include masonry-phone;
+	@include larger-img-phone;
+	@include upload-phone;
+}
+@media #{ map-get($break-points, tablet) } {
+	@include header-tablet;
+	@include masonry-tablet;
+	@include larger-img-tablet;
+	@include upload-tablet;
+}
+@media #{ map-get($break-points, desktop) } {
+	@include header-desktop;
+	@include masonry-desktop;
+}
+@media (min-width: 1110px) {
+	.nav-link {
+		&-2 .btn {font-size: 1em}
+	}
+}

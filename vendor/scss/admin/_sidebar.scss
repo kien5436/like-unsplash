@@ -1,0 +1,19 @@
+.sidebar {
+	@extend .logo;
+	font-size: 1.6em;
+	position: absolute;
+	top: 6rem;
+	left: 0;
+	transition: .3s;
+	a {
+		color: $gray;
+		font-weight: 400;
+		padding: 1em;
+		text-transform: inherit;
+		&.active {
+			color: #000;
+			font-weight: 700;
+		}
+		span {font-size: inherit}
+	}
+}

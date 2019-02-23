@@ -1,0 +1,58 @@
+.profile {
+	margin: 8em 0;
+	&-wrapper {
+		margin: auto;
+		text-align: center;
+		width: 26em;
+	}
+	&-picture {
+		border-radius: 50%;
+		height: 26em;
+		margin: auto;
+		width: 26em;
+	}
+	&-misc {
+		h2 {
+			font-size: 3em;
+			margin: 1em 0;
+		}
+		&-1 {
+			font-size: 1.5em;
+			margin-bottom: 1em;
+			text-align: left;
+		}
+		.btn {
+			color: #000;
+			&:hover {
+				background: $dark;
+				color: #fff
+			}
+		}
+	}
+	&:after {@extend %clearfix;}
+}
+
+.gallery {
+	.tab {
+		padding: 0 3rem;
+		&-nav {
+			color: $dark;
+			font-size: 1.6em;
+			&:hover {background: none}
+			&-active {background: none;font-weight: 700}
+		}
+	}
+}
+
+@mixin gallery-desktop() {
+	.profile {
+		&-wrapper {width: 50%}
+		&-picture {float: left}
+		&-misc {
+			float: left;
+			text-align: left;
+			width: calc(100% - 26em);
+			padding-left: 3em;
+		}
+	}
+}

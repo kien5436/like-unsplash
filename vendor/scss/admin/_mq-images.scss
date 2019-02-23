@@ -1,0 +1,19 @@
+@media #{ map-get($break-points, phone) } {
+	@include header-phone;
+	// @include masonry-phone;
+	// @include larger-img-phone;
+	// @include upload-phone;
+}
+@media #{ map-get($break-points, tablet) } {
+	@include header-tablet;
+	// @include masonry-tablet;
+	// @include larger-img-tablet;
+	// @include upload-tablet;
+}
+@media #{ map-get($break-points, desktop) } {
+	// @include masonry-desktop;
+}
+
+@media (min-width: 1280px) {
+	.logo {width: 20%}
+}

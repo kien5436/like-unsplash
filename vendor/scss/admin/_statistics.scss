@@ -1,0 +1,35 @@
+.boards {
+	margin: 1.5em auto 3em;
+	&:after { @extend %clearfix }
+}
+.board {
+	&-wrapper {
+		@extend %col;
+		font-size: 1.5em;
+		padding: 0 .5em;
+		width: nth($col, 4);
+	}
+	background: #fff;
+	padding: 1em;
+	transition: .3s;
+	&.selected,
+	&:hover {box-shadow: -.2em .2em .5em rgba(#000, .5) }
+	&-title {margin-bottom: 1em }
+	&-content span {
+		background: #f1f1f1;
+		border-radius: 7em;
+		float: right;
+		font-weight: 700;
+		padding: .5em 1em;
+	}
+}
+
+.chart {
+	margin: 0 auto;
+	width: 98%;
+	canvas {
+		background: rgba(whitesmoke, .2);
+		margin-bottom: 5em;
+		max-width: 100%;
+	}
+}

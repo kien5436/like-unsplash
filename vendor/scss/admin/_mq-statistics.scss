@@ -1,0 +1,11 @@
+@media #{ map-get($break-points, phone) } {
+	@include header-phone;
+}
+@media #{ map-get($break-points, tablet) } {
+	@include header-tablet;
+}
+@media #{ map-get($break-points, desktop) } {
+}
+@media (min-width: 1280px) {
+	.logo {width: 20%}
+}

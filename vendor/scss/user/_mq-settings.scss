@@ -1,0 +1,16 @@
+@media #{ map-get($break-points, phone) } {
+	@include header-phone;
+	@include settings-phone;
+	@include tab-phone;
+	@include upload-phone;
+}
+@media #{ map-get($break-points, tablet) } {
+	@include header-tablet;
+	@include tab-tablet;
+	@include upload-tablet;
+}
+@media #{ map-get($break-points, desktop) } {
+	@include header-desktop;
+	@include settings-desktop;
+	@include tab-desktop;
+}

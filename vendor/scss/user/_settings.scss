@@ -1,0 +1,108 @@
+.settings {
+	font-size: 1.6em;
+	width: 80%;
+	.tab-nav {
+		color: $dark;
+		&:hover {background: none}
+		&-active {background: none;font-weight: 700}
+	}
+	@at-root
+	.user {
+		&-1 {
+			@extend %col;
+			position: relative;
+			text-align: center;
+			input[type=file] {display: none}
+			.error-input {
+				bottom: -4em;
+				font-size: 1em;
+			}
+		}
+		&-2 {
+			@extend %col;
+		}
+		&-pp {
+			border-radius: 50%;
+			display: block;
+			height: 7.5em;
+			margin: 0 auto 1em;
+			width: 7.5em;
+		}
+		&-info {
+			margin: 1em 0;
+			&-title {
+				float: left;
+				line-height: 1.5em;
+				width: 25%;
+			}
+			&-text {
+				@at-root input#{&} {
+					border: 1px solid #000;
+					padding: .5em;
+				}
+				float: left;				
+				@at-root ul#{&} {
+					border: none;
+					li {
+						display: inline;
+						margin-right: 2em;
+						input[type=radio] {display: none}
+						.pseudo-radio {
+							border-radius: 50%;
+							border: 1px solid #000;
+							display: inline-block;
+							height: 1em;
+							margin-right: 0.5em;
+							transition: .3s;
+							vertical-align: middle;
+							width: 1em;
+							&.checked {background: $dark;}
+						}
+					}
+				}
+			}
+			&:after {@extend %clearfix;}
+		}
+	}
+	input[type=submit] {
+		background: $dark;
+		color: #fff;
+		float: right;
+		margin-right: 1em;
+		&:hover {background: #000}
+	}
+}
+
+@mixin settings-phone() {
+	.settings {
+		margin: 3em auto;
+		@at-root
+		.user {
+			&-1,
+			&-2,
+			&-info-title,
+			&-info-text,
+			input#{&}-info-text {width: 100%}
+			&-info .error-input {
+				font-size: 1em;
+				left: 0;
+			}
+		}
+		input[type=submit] {margin-bottom: 3em}
+	}
+}
+
+@mixin settings-desktop() {
+	.settings {
+		margin: 6em auto;
+		@at-root
+		.user {
+			&-1 {width: nth($col, 3)}
+			&-2 {width: nth($col, 9)}
+			&-info-title {width: 25%}
+			&-info-text,
+			input#{&}-info-text {width: 75%}
+			&-info .error-input {left: 25%}
+		}
+	}
+}

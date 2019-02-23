@@ -1,0 +1,19 @@
+.main {
+	@extend %col;
+	background: $white;
+	min-height: 90vh;
+	transition: .3s;
+	width: 100%;
+	@at-root {
+		.footer {
+			background: #fff;
+			bottom: 0;
+			font-size: 1.4em;
+			padding: 1em;
+			position: fixed;
+			right: 0;
+			text-align: center;
+			width: 100%;
+		}
+	}
+}

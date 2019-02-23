@@ -1,0 +1,63 @@
+.search {
+	margin: 3em 0;
+	padding: 1em 0;
+	&:after { @extend %clearfix; }
+	&-text {
+		@extend %col;
+		font-size: 1.5em;
+		line-height: 2em;
+		text-align: right;
+		width: nth($col, 2);
+	}
+	&-form {
+		@extend %col;
+		width: nth($col, 10);
+	}
+	&-opt {
+		@extend %col;
+		text-align: center;
+		position: relative;
+		&:nth-child(3) {
+			text-align: right;
+		}
+		.select {
+			padding: .5em 1em;
+		}
+		input[type=text] {
+			border: 1px solid #ccc;
+			padding: .55em 1em;
+		}
+	}
+}
+
+.user {
+	@extend %col;
+	font-size: 1.6em;
+	padding: 1em;
+	position: relative;
+	transition: .3s;
+	width: nth($col, 4);
+	&:hover {box-shadow: -.2em .2em .5em rgba(#000, .5)}
+	&-pp {
+		border-radius: 50%;
+		float: left;
+		height: 5rem;
+		width: 5rem;
+	}
+	&-info {
+		float: left;
+		margin-left: 1em;
+		&-name {
+			font-size: 1.2em;
+			.fa-shield {font-size: .7em}
+		}
+		&-overview span:first-child {margin-right: 1em}
+	}
+	&:after {@extend %clearfix}
+	.rm-user {
+		cursor: pointer;
+		position: absolute;
+		right: 1em;
+		top: 1em;
+	}
+}

@@ -1,0 +1,14 @@
+$break-points: (
+	phone: '(min-width: 320px)',
+	tablet: '(min-width: 720px)',
+	desktop: '(min-width: 1024px)'
+);
+//==== define width for each col from 1 to 12
+$col: ();
+@for $i from 1 through 12 {
+  $col: append($col, $i * 100%/12);
+}
+//====
+$gray: #727272;
+$dark: #262626;
+$white: #f9fafb;

@@ -1,0 +1,140 @@
+.header {
+	background: #fff;
+	font-size: 1.4em;
+	height: 6rem;
+	left: 0;
+	padding: 0 3rem;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+	@at-root {
+		.logo {
+			@extend %col;
+			padding: 1em 0;
+			text-align: center;
+			a {
+				color: $dark;
+				display: block;
+				font-weight: 700;
+				text-transform: uppercase;
+				&:hover {color: #000}
+			}
+			&-img {
+				font-size: 3.2rem;
+				float: left;
+				height: 3.2rem;
+				margin-right: .3em !important;
+				width: 3.2rem;
+			}
+			p {
+				font-size: 1.5em;
+				float: left;
+				height: 100%;
+				line-height: 1.5em;
+			}
+		}
+		.burger-btn {
+			@extend %col;
+			height: 100%;
+			position: relative;
+			text-align: center;
+			width: 4em;
+			#burger {
+				display: none;
+				&:checked ~ label[for=burger] .burger::before,
+				&:checked ~ label[for=burger] .burger::after {
+					transform: translate(-18%, 0.1em) rotate(-45deg);
+					width: 70%;
+				}
+				&:checked ~ label[for=burger] .burger::after {
+					transform: translate(-18%, -0.1em) rotate(45deg);
+				}
+			}
+			label[for=burger] {
+				cursor: pointer;
+				display: block;
+				height: 100%;
+				width: 100%;
+				.burger {
+					@extend %burger;
+					@include center(absolute, 'both');
+					&::before,
+					&::after {
+						@extend %burger;
+						content: '';
+						left: 0;
+						top: -6px;
+						width: 100%;
+					}
+					&::after {top: 6px}
+				}
+			}
+		}
+		.nav-link {
+			float: right;
+			height: 100%;
+			&-2 {
+				float: right;
+				.btn {
+					background: none;
+					color: $dark;
+					&:hover {
+						color: #000;
+						.btn-title {
+							background: #eee;
+							width: 6em;
+						}
+					}
+				}
+				.btn-dropdown {
+					.fa {
+						font-size: 1.2em;
+						vertical-align: middle;
+					}
+					&.avatar {padding: 0 1em;
+						img {height: 3rem; width: 3rem}
+					}
+				}
+				.btn-dropdown-menu {
+					left: unset;
+					max-height: 20em;
+					min-width: 15em;
+					overflow-y: auto;
+					right: 0;
+					top: 3.2em;
+					z-index: 1;
+					.btn-dropdown-item {
+						padding: 0;
+						a {
+							// background: #e1e1e1; unread
+							color: #000;
+							display: block;
+							padding: 1em;
+						}
+					}
+				}
+			}
+		}
+	}
+	&:after {@extend %clearfix;}
+}
+
+@mixin header-phone() {
+	.logo {width: 100%}
+	.burger-btn {height: 55%}
+	.nav-link {
+		// height: 55%;
+		// width: nth($col, 4);
+		&-2 {padding: 0}
+	}
+}
+
+@mixin header-tablet() {
+	.logo {width: nth($col, 3)}
+	.burger-btn {height: 100%}
+	.nav-link {
+		// width: nth($col, 2);
+		&-2 {padding: 1em 0}
+	}
+}

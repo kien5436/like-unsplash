@@ -1,0 +1,257 @@
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 400;
+	src: url('../../fonts/SourceSansPro-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 700;
+	src: url('../../fonts/SourceSansPro-Bold.ttf') format('truetype');
+}
+*, *:before, *:after {box-sizing: border-box; margin: 0; padding: 0;}
+html {
+	font: normal 62.5% 'Source Sans Pro', sans-serif;
+	@at-root {
+		body {padding-top: 6rem}
+		// reset css
+		a {
+			text-decoration: none;
+			&,
+			&:active,
+			&:focus,
+			&:visited {
+				color: #1268ecff;
+				outline: 0;
+			}
+		}
+		ul {
+			list-style: none;
+			text-align: left;
+		}
+		textarea {resize: none}
+		input {
+			display: inline-block;
+			outline: none;
+		}
+		select {
+			-webkit-appearance: none;
+			appearance: none;
+			border: 1px solid #ccc;
+		}
+
+		// bootstrap snippets
+		.fa:not(:only-child) {margin-right: .5em}
+
+		.btn {
+			background: #eee;
+			border: none;
+			cursor: pointer;
+			display: inline-block;
+			font-size: 1.4rem;
+			padding: .5em 1em;
+			position: relative;
+			transition: .3s;
+			&-dropdown { // only work with div
+				position: relative;
+				&-menu {
+					background: #fff;
+					border: 1px solid #ccc;
+					cursor: pointer;
+					display: none;
+					left: 0;
+					position: absolute;
+					text-align: left;
+					top: 100%;
+					width: 100%;
+					&.show {display: block}
+				}
+				&-item {
+					&:hover { background: #eee }
+					padding: .5em;
+					transition: .3s;
+				}
+				&-divider { border-bottom: 1px solid #ccc }
+			}
+			&:hover &-title {display: block}
+			&-title {
+				background: inherit;
+				display: none;
+				font-size: 1em;
+				font-style: normal;
+				left: -50%;
+				padding: 0.5em;
+				position: absolute;
+				top: 110%;
+			}
+		}
+
+		.tab {
+			background: #fff;
+			@extend %col;
+			width: nth($col, 2);
+			padding: 0;
+			&.tab-horizontal {
+				width: 100%;
+				& + .tab-content {width: 100%}
+				&:after {@extend %clearfix}
+			}
+			// &-item:first-child {
+				// 	font-size: 2em;
+				// 	cursor: pointer;
+				// }
+				&-nav {
+					display: block;
+					padding: .5em;
+					transition: .3s;
+					width: 100%;
+					&:hover,
+					&-active {background: #eee}
+				}
+				&-content {
+					@extend %col;
+					position: relative;
+					width: nth($col, 10);
+				}
+				&-pane {
+					display: none;
+					height: 100%;
+					left: 0;
+					position: absolute;
+					top: 0;
+					width: 100%;
+					&-active {display: block;}
+				}
+			}
+			
+			.error {
+				position: relative;
+				&-input {
+					animation: showError .3s forwards;
+					background: #333;
+					border-radius: 4px;
+					bottom: -3em;
+					color: #fff;
+					font-size: 1.5em;
+					left: 0;
+					padding: .5em;
+					position: absolute;
+					text-align: center;
+					z-index: 5;
+					@keyframes showError {
+						from {transform: scaleY(0); transform-origin: 50% -1%}
+						to {transform: scaleY(1)}
+					}
+					&:before {
+						border: 10px solid transparent;
+						border-bottom-color: #333;
+						content: '';
+						display: block;
+						left: 3%;
+						position: absolute;
+						top: -1em;
+					}
+				}
+			}
+
+			.notif {
+				animation: fade 5s linear forwards;
+				background: #eee;
+				bottom: 2em;
+				box-shadow: 0 0 6px #000;
+				padding: 1em;
+				position: fixed;
+				right: 1em;
+				width: 25em;
+				&:hover { animation: 0 }
+				@keyframes fade {
+					0% {opacity: 0}
+					.3% {opacity: 1}
+					100% { opacity: 0; visibility: hidden }
+				}
+				&-x {
+					cursor: pointer;
+					position: absolute;
+					right: 1em;
+					top: 1em;
+				}
+				&-content {
+					font-size: 1.5em;
+					padding-right: 1em;
+				}
+			}
+		}
+
+		.modal {
+			@include center(fixed, 'horizontal');
+			background: $white;
+			box-shadow: 0 0 1em rgba(#000, .3);
+			display: none;
+			font-size: 2em;
+			padding: 1em;
+			top: 3em;
+			z-index: 5;
+			&.show {
+				animation: fadeIn .3s forwards;
+				display: block;
+				@keyframes fadeIn {
+					0% {transform: translate(-50%, -100%) }
+					100% {transform: translate(-50%, 0) }
+				}
+			}
+			&.hide {
+				animation: fadeOut .3s forwards;
+				display: block;
+				@keyframes fadeOut {
+					0% {transform: translate(-50%, 0) }
+					100% {transform: translate(-50%, -200%) }
+				}
+			}
+			&-action {
+				margin-top: 1em;
+				text-align: right;
+				#modal-cancel {
+					background: $dark;
+					color: $white;
+				}
+			}
+		}
+	}
+
+	@mixin tab-phone() {
+		.tab {
+			width: 100%;
+			&-item {
+				// &:first-child {display: block}
+				// &:not(:first-child) {display: none}
+				.tab.tab-horizontal & {float: none}
+			}
+			&-content {
+				width: 100%;
+				margin: 2em 0;
+			}
+		}
+	}
+
+	@mixin tab-tablet() {
+		.tab {
+			width: nth($col, 3);
+			&-item{
+				// &:first-child {display: none}
+				// &:not(:first-child) {display: block}
+				.tab.tab-horizontal & {float: left}
+			}
+			&-content {
+				width: nth($col, 9);
+				margin: 0 0 2em;
+			}
+		}
+	}
+
+	@mixin tab-desktop() {
+		.tab {
+			width: nth($col, 2);
+			&-content {width: nth($col, 10)}
+		}
+	}

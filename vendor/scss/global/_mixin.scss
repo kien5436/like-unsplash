@@ -1,0 +1,35 @@
+%clearfix {
+	clear: both;
+	content: '';
+	display: block
+}
+// a standard col
+%col {
+	float: left;
+	padding: 0 1em;
+}
+
+@mixin center($pos, $opt) {
+	position: $pos;	
+	@if $opt == 'vertical' {
+		top: 50%;
+		transform: translateY(-50%);
+	} @else if $opt == 'horizontal' {
+		left: 50%;
+		transform: translateX(-50%);
+	} @else {
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
+
+%burger {
+	background: #000;
+	border-radius: 7px;
+	display: inline-block;
+	height: 3px;
+	position: absolute;
+	transition: .3s;
+	width: 40%;
+}
