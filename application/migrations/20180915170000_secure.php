@@ -5,11 +5,10 @@ class Migration_Secure extends CI_Migration {
 	public function up() {
 		$this->dbforge->add_field([
 			'sid' => [
-				'type' => 'int',
-				'auto_increment' => true
+				'type' => 'serial',
 			],
 			'uid' => [
-				'type' => 'int',
+				'type' => 'integer',
 				'unique' => true
 			],
 			'salt' => [
@@ -19,7 +18,6 @@ class Migration_Secure extends CI_Migration {
 		]);
 		$this->dbforge->add_key('sid', true);
 		$this->dbforge->create_table('secure');
-		$this->db->query('ALTER TABLE secure ADD FOREIGN KEY(uid) REFERENCES user(uid) ON DELETE CASCADE ON UPDATE CASCADE');
 	}
 
 	public function down() {

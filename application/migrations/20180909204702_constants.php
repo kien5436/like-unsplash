@@ -5,8 +5,7 @@ class Migration_Constants extends CI_Migration {
 	public function up() {
 		$this->dbforge->add_field([
 			'cid' => [
-				'type' => 'int',
-				'auto_increment' => true
+				'type' => 'serial'
 			],
 			'cname' => [
 				'type' => 'varchar',

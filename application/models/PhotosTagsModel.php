@@ -2,7 +2,7 @@
 
 class PhotosTagsModel extends MY_Model {
 	protected $table = 'photos_tags';
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -16,7 +16,7 @@ class PhotosTagsModel extends MY_Model {
 		}
 		$q = rtrim($q, ',');
 
-		$q = sprintf('%s on duplicate key update pid = values(pid), tag_id = values(tag_id)', $q);
+		$q = sprintf('%s on conflict(tag_id, pid) do update set pid = excluded.pid, tag_id = excluded.tag_id', $q);
 
 		return $this->db->query($q);
 	}

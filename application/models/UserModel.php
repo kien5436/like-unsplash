@@ -1,8 +1,8 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class UserModel extends MY_Model {
-	protected $table = 'user';
-	
+	protected $table = 'users';
+
 	function __construct()
 	{
 		parent::__construct();

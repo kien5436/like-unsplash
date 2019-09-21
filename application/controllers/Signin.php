@@ -61,11 +61,11 @@ class Signin extends MY_Controller {
 
 		if ($this->form_validation->run() === true) {
 			$data = $this->input->post();
-			
+
 			foreach ($data as &$value) $value = strip_tags($value);
 
 			$this->load->model('UserModel', 'user');
-			
+
 			if ( $info = $this->user->get(['email' => $data['email']], 'uid, password, role, slug_name') ) {
 				if (password_verify($data['password'], $info[0]['password']) === true) {
 					$cookie = [
@@ -74,7 +74,7 @@ class Signin extends MY_Controller {
 						'username' => ['value' => $info[0]['slug_name'], 'expire' => strtotime('+30 days')],
 					];
 					$this->setCookie($cookie);
-					
+
 					if ($info[0]['role'] == 1) redirect('quan-tri');
 					else redirect('/');
 				}
@@ -94,7 +94,7 @@ class Signin extends MY_Controller {
 	private function loadViewSignin()
 	{
 		$this->load->model('SecureModel', 'secure');
-		
+
 		if ( !$this->secure->isValidCookie() ) {
 
 			$this->layout = [
@@ -103,11 +103,11 @@ class Signin extends MY_Controller {
 				'contents' => $this->load->view('template/signin.php', $this->genContent(), true),
 				'footer' => '',
 				'css' => [
-					'/vendor/css/font-awesome.min.css',
-					'/vendor/css/global/signin.css'
+					'/assets/css/font-awesome.min.css',
+					'/assets/css/global/signin.css'
 				],
 				'js' => [
-					'/vendor/js/user/signin.min.js'
+					'/assets/js/user/signin.min.js'
 				]
 			];
 			$this->load->view('template/layout', $this->layout);
@@ -123,7 +123,7 @@ class Signin extends MY_Controller {
 	private function genContent()
 	{
 		$this->load->library('form_validation');
-		
+
 		switch ($this->error['errorCode']) {
 			case 1:
 			case 2:

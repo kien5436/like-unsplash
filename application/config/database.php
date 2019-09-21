@@ -74,10 +74,10 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> 'mysql:host=localhost; dbname=like_unsplash',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
+	'dsn'	=> 'pgsql:host=ec2-54-221-238-248.compute-1.amazonaws.com;port=5432;dbname=det6i8u2nmrdeo',
+	'hostname' => '',
+	'username' => 'lbqbpzulvhlxkr',
+	'password' => '9e6bae65de1fecc648daf2fdce203e7bc81da056354c59f8daa85950331ec23a',
 	'database' => '',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',
@@ -86,7 +86,7 @@ $db['default'] = array(
 	'cache_on' => FALSE,
 	'cachedir' => '',
 	'char_set' => 'utf8',
-	'dbcollat' => 'utf8_unicode_ci',
+	'dbcollat' => 'utf8mb4_unicode_ci',
 	'swap_pre' => '',
 	'encrypt' => FALSE,
 	'compress' => FALSE,

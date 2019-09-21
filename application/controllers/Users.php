@@ -73,14 +73,14 @@ class Users extends MY_Controller {
 		$this->load->library('form_validation');
 
 		$modules = [
-			VENDOR.'js/global/helper.js',
-			VENDOR.'js/global/form-validate.js',
-			VENDOR.'js/global/infinite-scroll.js',
-			VENDOR.'js/admin/header.js',
-			VENDOR.'js/admin/menu.js',
-			VENDOR.'js/admin/users.js'
+			ASSETS.'js/global/helper.js',
+			ASSETS.'js/global/form-validate.js',
+			ASSETS.'js/global/infinite-scroll.js',
+			ASSETS.'js/admin/header.js',
+			ASSETS.'js/admin/menu.js',
+			ASSETS.'js/admin/users.js'
 		];
-		$this->combineJS($modules, VENDOR.'js/admin/users.js', 0);
+		$this->combineJS($modules, ASSETS.'js/admin/users.js', 0);
 
 		$users = $users ?? $this->user->listUsers();
 
@@ -102,7 +102,7 @@ class Users extends MY_Controller {
 			}
 		}
 		else $users = '<p style="font-size: 2em;text-align: center;">Không tìm thấy kết quả nào</p>';
-		
+
 		$content = $this->load->view('admin/users', ['users' => $users, 'opts' => $consts], true);
 
 		$this->layout = [
@@ -111,12 +111,12 @@ class Users extends MY_Controller {
 			'contents' => $this->genContentAdmin($content),
 			'footer' => $this->load->view('admin/footer.html', '', true),
 			'css' => [
-				'/vendor/css/font-awesome.min.css',
-				'/vendor/css/admin/users.css'
+				'/assets/css/font-awesome.min.css',
+				'/assets/css/admin/users.css'
 			],
 			'js' => [
-				'/vendor/js/jquery.min.js',
-				'/vendor/js/admin/users.min.js'
+				'/assets/js/jquery.min.js',
+				'/assets/js/admin/users.min.js'
 			]
 		];
 		$this->load->view('template/layout', $this->layout);

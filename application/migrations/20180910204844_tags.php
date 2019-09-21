@@ -5,17 +5,19 @@ class Migration_Tags extends CI_Migration {
 	public function up() {
 		$this->dbforge->add_field([
 			'tag_id' => [
-				'type' => 'int',
-				'auto_increment' => true
+				'type' => 'serial',
 			],
 			'tag_name' => [
 				'type' => 'varchar',
-				'constraint' => 30
+				'constraint' => 30,
+				'unique' => TRUE,
+			],
+			'created_at' => [
+				'type' => 'timestamp default CURRENT_TIMESTAMP'
 			]
 		]);
 		$this->dbforge->add_key('tag_id', true);
 		$this->dbforge->create_table('tags');
-		$this->db->query('ALTER TABLE tags ADD UNIQUE(tag_name)');
 	}
 
 	public function down() {

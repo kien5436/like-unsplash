@@ -3,7 +3,7 @@
 class Migration_Update_user extends CI_Migration {
 
 	public function up() {
-		$this->dbforge->add_column('user', [
+		$this->dbforge->add_column('users', [
 			'created_at' => ['type' => 'timestamp default CURRENT_TIMESTAMP']
 		]);
 	}

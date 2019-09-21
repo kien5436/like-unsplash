@@ -62,7 +62,7 @@ class Signup extends MY_Controller {
 				]
 			]
 		];
-		
+
 		$this->form_validation->set_rules($config);
 
 		if ($this->form_validation->run() === true) {
@@ -70,10 +70,10 @@ class Signup extends MY_Controller {
 			$info = $this->user->get(['email' => $data['email']], 'count(email) as num');
 			if ($info[0]['num'] == 0) {
 				foreach ($data as &$value) $value = strip_tags($value);
-				
+
 				$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT, ['cost' => 10]);
 				$data['slug_name'] = $this->slug->slugify( sprintf('%s %s', $data['lname'], $data['fname']) );
-				
+
 				if ($this->user->insert($data)) {
 					$info = $this->user->get(['email' => $data['email']], 'uid, password, slug_name');
 					$cookie = [
@@ -98,7 +98,7 @@ class Signup extends MY_Controller {
 	public function loadViewSignup()
 	{
 		$this->load->model('SecureModel', 'secure');
-		
+
 		if ( !$this->secure->isValidCookie() ) {
 
 			$this->layout = [
@@ -107,11 +107,11 @@ class Signup extends MY_Controller {
 				'contents' => $this->load->view('template/signin.php', $this->genContent(), true),
 				'footer' => '',
 				'css' => [
-					'/vendor/css/font-awesome.min.css',
-					'/vendor/css/global/signin.css'
+					'/assets/css/font-awesome.min.css',
+					'/assets/css/global/signin.css'
 				],
 				'js' => [
-					'/vendor/js/user/signup.min.js'
+					'/assets/js/user/signup.min.js'
 				]
 			];
 			$this->load->view('template/layout', $this->layout);
@@ -138,19 +138,19 @@ class Signup extends MY_Controller {
 			$content['emailError'] = form_error('email', '<p class="error-input">', '</p>');
 			break;
 		}
-		
+
 		return [
 			'action' => base_url('dang-ki'),
 			'introText' => 'Đăng kí để trở thành người đóng góp cho cộng đồng ảnh lớn nhất thế giới',
 			'redirect' => sprintf('<p>Đã có tài khoản? Đăng nhập <a href="%s">tại đây</a></p>
-				<p>Đăng kí bằng</p>', 
+				<p>Đăng kí bằng</p>',
 				base_url('dang-nhap')),
 			'items' => sprintf('
 				<div class="form-item"><input type="text" name="lname" placeholder="Họ" value="%s" autofocus>%s</div>
 				<div class="form-item"><input type="text" name="fname" placeholder="Tên" value="%s">%s</div>
 				<div class="form-item"><input type="text" name="email" placeholder="Email đăng kí" value="%s">%s</div>
 				<div class="form-item"><input type="password" name="password" placeholder="Mật khẩu">%s</div>
-				<div class="form-item"><input type="submit" value="Đăng kí"></div>', 
+				<div class="form-item"><input type="submit" value="Đăng kí"></div>',
 				set_value('lname'), form_error('lname', '<p class="error-input">', '</p>'),
 				set_value('fname'), form_error('fname', '<p class="error-input">', '</p>'),
 				$content['email'], $content['emailError'],

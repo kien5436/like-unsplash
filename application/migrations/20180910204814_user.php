@@ -5,8 +5,7 @@ class Migration_User extends CI_Migration {
 	public function up() {
 		$this->dbforge->add_field([
 			'uid' => [
-				'type' => 'int',
-				'auto_increment' => true
+				'type' => 'serial'
 			],
 			'email' => [
 				'type' => 'varchar',
@@ -18,8 +17,7 @@ class Migration_User extends CI_Migration {
 				'constraint' => 255,
 			],
 			'role' => [
-				'type' => 'tinyint',
-				'constraint' => 1,
+				'type' => 'smallint',
 				'default' => '0'
 			],
 			'fname' => [
@@ -41,8 +39,7 @@ class Migration_User extends CI_Migration {
 				'default' => null
 			],
 			'sex' => [
-				'type' => 'tinyint',
-				'constraint' => 1,
+				'type' => 'smallint',
 				'default' => 2
 			],
 			'location' => [
@@ -55,13 +52,15 @@ class Migration_User extends CI_Migration {
 				'constraint' => 100,
 				'default' => null
 			],
+			'created_at' => [
+				'type' => 'timestamp default CURRENT_TIMESTAMP'
+			]
 		]);
 		$this->dbforge->add_key('uid', true);
-		$this->dbforge->create_table('user');
-		$this->db->query('alter table user add fulltext(slug_name)');
+		$this->dbforge->create_table('users');
 	}
 
 	public function down() {
-		$this->dbforge->drop_table('user');
+		$this->dbforge->drop_table('users');
 	}
 }

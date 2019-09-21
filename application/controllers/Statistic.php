@@ -30,12 +30,12 @@ class Statistic extends MY_Controller {
 			'contents' => $this->genContentAdmin($this->load->view('admin/statistics', compact('metrics'), true)),
 			'footer' => $this->load->view('admin/footer.html', '', true),
 			'css' => [
-				'/vendor/css/font-awesome.min.css',
-				'/vendor/css/admin/statistics.css',
+				'/assets/css/font-awesome.min.css',
+				'/assets/css/admin/statistics.css',
 			],
 			'js' => [
-				'/vendor/js/jquery.min.js',
-				'/vendor/js/admin/statistics.min.js'
+				'/assets/js/jquery.min.js',
+				'/assets/js/admin/statistics.min.js'
 			]
 		];
 		$this->load->view('template/layout', $this->layout);
@@ -68,11 +68,11 @@ class Statistic extends MY_Controller {
 				break;
 			case 0: // all
 				$labels = ['user' => 'Người dùng', 'photo' => 'Ảnh', 'tag' => 'Thẻ'];
-				foreach ($labels as $k => $v) { 
+				foreach ($labels as $k => $v) {
 					$metrics[] = [
 						'data' => $this->handleMetrics($this->{$k}->getMetrics($from, $to)),
 						'label' => $v
-					]; 
+					];
 				}
 				break;
 		}

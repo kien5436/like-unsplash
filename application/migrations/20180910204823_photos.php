@@ -5,8 +5,7 @@ class Migration_Photos extends CI_Migration {
 	public function up() {
 		$this->dbforge->add_field([
 			'pid' => [
-				'type' => 'int',
-				'auto_increment' => true
+				'type' => 'serial',
 			],
 			'title' => [
 				'type' => 'varchar',
@@ -23,9 +22,8 @@ class Migration_Photos extends CI_Migration {
 				'comment' => 'maybe a link or blob content'
 			],
 			'size' => [
-				'type' => 'mediumint',
+				'type' => 'smallint',
 				'constraint' => 8,
-				'unsigned' => true,
 				'comment' => 'kiB'
 			],
 			'dim' => [
@@ -34,19 +32,19 @@ class Migration_Photos extends CI_Migration {
 				'unsigned' => true
 			],
 			'views' => [
-				'type' => 'int',
+				'type' => 'smallint',
 				'default' => '0'
 			],
 			'downloaded' => [
-				'type' => 'int',
+				'type' => 'smallint',
 				'default' => '0'
 			],
 			'uid' => [
-				'type' => 'int',
+				'type' => 'smallint',
 				'comment' => 'user who posted this photo'
 			],
 			'loved' => [
-				'type' => 'int',
+				'type' => 'smallint',
 				'default' => '0'
 			],
 			'loved_people' => [
@@ -60,12 +58,11 @@ class Migration_Photos extends CI_Migration {
 			],
 			'updated_at' => [
 				'type' => 'timestamp',
-				'default' => '0000-00-00 00:00:00'
+				'default' => '1999-01-01 00:00:00'
 			],
 		]);
 		$this->dbforge->add_key('pid', true);
 		$this->dbforge->create_table('photos');
-		$this->db->query('ALTER TABLE photos ADD FOREIGN KEY(uid) REFERENCES user(uid) ON DELETE CASCADE ON UPDATE CASCADE');
 	}
 
 	public function down() {

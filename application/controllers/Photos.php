@@ -49,7 +49,7 @@ class Photos extends MY_Controller {
 				$photo['content'] = base_url($photo['content']);
 					// compare whether current user loved their photos by thmeselves
 				$photo['loved_people'] = json_decode($photo['loved_people'], true)['uid'];
-				$photo['selfLoved'] = ($this->secure->isValidCookie() === true) ? array_search($_COOKIE['uid'], $photo['loved_people']) : false;
+				$photo['selfLoved'] = ($this->secure->isValidCookie() === true && null !== $photo['loved_people']) ? array_search($_COOKIE['uid'], $photo['loved_people']) : false;
 					// handle user's picture profile
 				$photo['picture_profile_50'] = ($photo['picture_profile'] !== null) ? base_url( explode(',', $photo['picture_profile'])[1] ) : base_url('upload/picture_profiles/default_50.png');
 				unset($photo['loved_people'], $photo['picture_profile']);
@@ -84,7 +84,7 @@ class Photos extends MY_Controller {
 
 			if (!empty($photo)) {
 				$lovedPeople = json_decode($photo[0]['loved_people'], true);
-				$tmp = array_search($_COOKIE['uid'], $lovedPeople['uid']);
+				$tmp = $lovedPeople === null ? false : array_search($_COOKIE['uid'], $lovedPeople['uid']);
 
 				if ($tmp === false) {
 					$loved = $photo[0]['loved'] + 1;
@@ -141,7 +141,7 @@ class Photos extends MY_Controller {
 	{
 		if ($this->photo->isExists($pid) > 0) {
 			$this->seeAndLove('view', $pid);
-			
+
 			$photo = $this->photo->getLargePhoto($pid);
 
 			$photo['created_at'] = ( new DateTime($photo['created_at']) )->format('d/m/Y');
@@ -150,7 +150,7 @@ class Photos extends MY_Controller {
 			$photo['w'] = preg_replace('/x\d+/', '', $photo['dim']);
 			// compare whether current user loved their photos by thmeselves
 			$photo['loved_people'] = json_decode($photo['loved_people'], true)['uid'];
-			$photo['selfLoved'] = array_search($_COOKIE['uid'], $photo['loved_people']);
+			$photo['selfLoved'] = (null !== $photo['loved_people']) ? array_search($_COOKIE['uid'], $photo['loved_people']) : false;
 
 			echo $this->load->view('template/larger-img', $photo, true);
 		}
@@ -174,7 +174,7 @@ class Photos extends MY_Controller {
 
 				$photo['content'] = base_url( $photo['content'] );
 				foreach ($photo as $k => $v) {
-					if ( !in_array($k, ['content', 'title', 'tags', 'pid']) ) 
+					if ( !in_array($k, ['content', 'title', 'tags', 'pid']) )
 						unset($photo[$k]);
 				}
 
@@ -231,7 +231,7 @@ class Photos extends MY_Controller {
 			}
 			$data['tags'] = implode(',', $data['tags']);
 			$tagIds = $this->tag->get(sprintf('tag_name in (%s)', $data['tags']), 'tag_id');
-			
+
 			if ( !empty($tagIds) ) {
 				$this->load->model('PhotosTagsModel', 'pt');
 
@@ -263,8 +263,10 @@ class Photos extends MY_Controller {
 				redirect($_SERVER['HTTP_REFERER']);
 			}
 		}
-		else redirect($_SERVER['HTTP_REFERER']); // temporary work around
-		// NEED TO CREATE ERROR FORM UPLOAD PAGE
+		else {
+			redirect($_SERVER['HTTP_REFERER']); // temporary work around
+			// NEED TO CREATE ERROR FORM UPLOAD PAGE
+		}
 	}
 
 	/** upload photo */
@@ -273,7 +275,7 @@ class Photos extends MY_Controller {
 		$config = [
 			'upload_path' 	 => './upload/photos',
 			'allowed_types' => 'gif|jpg|png',
-			'max_size'      => 2048,
+			'max_size'      => 10240,
 			'min_width'     => 400,
 			'min_height'    => 100,
 			'file_name' 	 => uniqid(),
@@ -282,10 +284,11 @@ class Photos extends MY_Controller {
 		$this->load->library('upload', $config);
 
 		if ($this->upload->do_upload('image')) {
+
 			$upload = $this->upload->data();
 			$thumbnail = $this->resizePhoto($upload['full_path'], [260, 315, 410], 'upload/photos/');
 
-			if ($thumbnail == true) {				
+			if ($thumbnail == true) {
 				$data = [
 					'uid' => $_COOKIE['uid'], // see who posts this photo
 					'size' => $upload['file_size'],

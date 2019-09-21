@@ -64,13 +64,13 @@ class Profile extends MY_Controller {
 				]
 			],
 		];
-		
+
 		$this->form_validation->set_rules($config);
 
 		if ($this->form_validation->run() == true) {
-			 
+
 			$data['new'] = password_hash($data['new'], PASSWORD_DEFAULT, ['cost' => 10]);
-			
+
 			if ($this->user->update(['uid' => $_COOKIE['uid']], ['password' => $data['new']]) == true) {
 				$_SESSION['notif'] = $this->genNotif('Đổi mật khẩu thành công');
 				$cookie = ['pwd' => ['value' => $data['new'], 'expire' => strtotime('+30 days')]];
@@ -150,7 +150,7 @@ class Profile extends MY_Controller {
 
 		$this->form_validation->set_rules($config);
 
-		if ($this->form_validation->run() === true) {			
+		if ($this->form_validation->run() === true) {
 			$data = $this->input->post();
 			foreach ($data as &$value) $value = strip_tags($value);
 			$oldPP = null;
@@ -210,14 +210,14 @@ class Profile extends MY_Controller {
 	public function loadViewSettings($username, $uid)
 	{
 		$modules = [
-			VENDOR.'js/global/helper.js',
-			VENDOR.'js/global/form-validate.js',
-			VENDOR.'js/user/header.js',
-			VENDOR.'js/global/tab.js',
-			VENDOR.'js/user/settings.js'
+			ASSETS.'js/global/helper.js',
+			ASSETS.'js/global/form-validate.js',
+			ASSETS.'js/user/header.js',
+			ASSETS.'js/global/tab.js',
+			ASSETS.'js/user/settings.js'
 		];
-		$this->combineJS($modules, VENDOR.'js/user/settings.js', 0);
-		
+		$this->combineJS($modules, ASSETS.'js/user/settings.js', 0);
+
 		$this->load->library('form_validation');
 		$this->load->model('SecureModel', 'secure');
 		$this->load->model('ConstantsModel', 'constant');
@@ -227,12 +227,11 @@ class Profile extends MY_Controller {
 		$header['isValidCookie'] = $this->secure->isValidCookie();
 		$header['granted'] = $this->secure->granted();
 		$user = $this->user->get(['uid' => $uid, 'slug_name' => $username], 'email, lname, fname, slug_name, picture_profile, sex, location, interests');
-		
+
 		if ($user == true && isset($_COOKIE['uid']) && $uid == $_COOKIE['uid']) {
 			$data = $user[0];
 			$data['doing'] = $this->doing;
-			$data['asex'] = json_decode( $this->constant->get(['cname' => 'sex'], 'cvalue')[0]['cvalue'] );
-
+			$data['asex'] = json_decode( stripcslashes($this->constant->get(['cname' => 'sex'], 'cvalue')[0]['cvalue']) );
 			for ($i = 0; $i < count($data['asex']); $i++) {
 				if ($data['sex'] !== null && $data['sex'] == $i) {
 					$data['sex'] = $data['asex'][$i];
@@ -256,35 +255,35 @@ class Profile extends MY_Controller {
 				'contents' => $this->load->view('user/settings', $data, true),
 				'footer' => '',
 				'css' => [
-					'/vendor/css/font-awesome.min.css',
-					'/vendor/css/user/settings.css'
+					'/assets/css/font-awesome.min.css',
+					'/assets/css/user/settings.css'
 				],
 				'js' => [
-					'/vendor/js/jquery.min.js',
-					'/vendor/js/user/settings.js'
+					'/assets/js/jquery.min.js',
+					'/assets/js/user/settings.js'
 				]
 			];
 			$this->load->view('template/layout', $this->layout);
 		}
-		else show_404();		
+		else show_404();
 	}
 
 	public function loadViewProfile($username, $uid)
 	{
 		$modules = [
-			VENDOR.'js/global/helper.js',
-			VENDOR.'js/global/form-validate.js',
-			VENDOR.'js/global/infinite-scroll.js',
-			VENDOR.'js/user/header.js',
-			VENDOR.'js/global/tab.js',
-			VENDOR.'js/global/image.js',
-			VENDOR.'js/user/profile.js'
+			ASSETS.'js/global/helper.js',
+			ASSETS.'js/global/form-validate.js',
+			ASSETS.'js/global/infinite-scroll.js',
+			ASSETS.'js/user/header.js',
+			ASSETS.'js/global/tab.js',
+			ASSETS.'js/global/image.js',
+			ASSETS.'js/user/profile.js'
 		];
-		$this->combineJS($modules, VENDOR.'js/user/profile.js', 0);
+		$this->combineJS($modules, ASSETS.'js/user/profile.js', 0);
 
-		$user = $this->user->get(['uid' => $uid, 'slug_name' => $username], 'uid, slug_name, concat_ws(" ", lname, fname) as username, picture_profile, location, interests');
+		$user = $this->user->get(['uid' => $uid, 'slug_name' => $username], 'uid, slug_name, concat_ws(\' \', lname, fname) as username, picture_profile, location, interests');
 		isset($_COOKIE['uid']) && $currentUser = $this->user->get(['uid' => $_COOKIE['uid']], 'picture_profile');
-		
+
 		$this->load->model('PhotosModel', 'photo');
 		$photos = $this->photo->getPhoto(['uid' => $uid]);
 
@@ -321,7 +320,7 @@ class Profile extends MY_Controller {
 					$photo['content'] = base_url($photo['content']);
 					// compare whether current user loved their photos by thmeselves
 					$photo['loved_people'] = json_decode($photo['loved_people'], true)['uid'];
-					$photo['selfLoved'] = ($header['isValidCookie'] === true) ? array_search($_COOKIE['uid'], $photo['loved_people']) : false;
+					$photo['selfLoved'] = ($header['isValidCookie'] === true && $photo['loved_people'] !== null) ? array_search($_COOKIE['uid'], $photo['loved_people']) : false;
 					// handle user's picture profile
 					$photo['picture_profile_50'] = ($photo['picture_profile'] !== null) ? base_url( explode(',', $photo['picture_profile'])[1] ) : base_url('upload/picture_profiles/default_50.png');
 					unset($photo['loved_people'], $photo['picture_profile']);
@@ -329,7 +328,7 @@ class Profile extends MY_Controller {
 				$photos['next'] = 12;
 				$photos['isValidCookie'] = $header['isValidCookie'];
 				$photos['granted'] = $this->secure->granted();
-				
+
 				$data['masonry'] = $this->load->view('template/masonry', ['photos' => $photos], true);
 				$data['modal'] = $this->load->view('template/modal', '', true);
 			}
@@ -340,12 +339,12 @@ class Profile extends MY_Controller {
 				'contents' => $this->load->view('user/profile', $data, true),
 				'footer' => '',
 				'css' => [
-					'/vendor/css/font-awesome.min.css',
-					'/vendor/css/user/profile.css'
+					'/assets/css/font-awesome.min.css',
+					'/assets/css/user/profile.css'
 				],
 				'js' => [
-					'/vendor/js/jquery.min.js',
-					'/vendor/js/user/profile.js'
+					'/assets/js/jquery.min.js',
+					'/assets/js/user/profile.js'
 				]
 			];
 			$this->load->view('template/layout', $this->layout);
