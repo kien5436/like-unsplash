@@ -21,4 +21,4 @@
       </div>
    </form>
 </div>
-<div id="uploadjs" data-src="<?= '/vendor/js/user/upload.min.js' ?>"></div>
+<div id="uploadjs" data-src="<?= '/assets/js/user/upload.min.js' ?>"></div>
