@@ -76,8 +76,8 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> 'mysql:host=localhost; dbname=like_unsplash',
 	'hostname' => 'localhost',
-	'username' => 'kien',
-	'password' => 'snowwhite',
+	'username' => 'root',
+	'password' => '',
 	'database' => '',
 	'dbdriver' => 'pdo',
 	'dbprefix' => '',
