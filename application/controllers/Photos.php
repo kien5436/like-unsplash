@@ -84,15 +84,16 @@ class Photos extends MY_Controller {
 
 			if (!empty($photo)) {
 				$lovedPeople = json_decode($photo[0]['loved_people'], true);
-				$tmp = array_search($_COOKIE['uid'], $lovedPeople['uid']);
+				$tmp = $lovedPeople !== null ? array_search($_COOKIE['uid'], $lovedPeople['uid']) : false;
 
 				if ($tmp === false) {
+
 					$loved = $photo[0]['loved'] + 1;
 					$lovedPeople['uid'][] = $_COOKIE['uid'];
 					$lovedPeople['time'] = time();
 				}
 				else {
-					$loved = $photo[0]['loved'] - 1;
+					$loved = $photo[0]['loved'] > 0 ? $photo[0]['loved'] - 1 : 0;
 					unset($lovedPeople['uid'][$tmp]);
 				}
 
@@ -100,6 +101,7 @@ class Photos extends MY_Controller {
 					'loved' => $loved,
 					'loved_people' => json_encode($lovedPeople)
 				];
+
 				if ($this->photo->update(['pid' => $pid], $photo) == 0)
 					log_message( 'error', sprintf('%s error: %s', __METHOD__, $this->db->last_query()) );
 			}
@@ -141,7 +143,7 @@ class Photos extends MY_Controller {
 	{
 		if ($this->photo->isExists($pid) > 0) {
 			$this->seeAndLove('view', $pid);
-			
+
 			$photo = $this->photo->getLargePhoto($pid);
 
 			$photo['created_at'] = ( new DateTime($photo['created_at']) )->format('d/m/Y');
@@ -174,7 +176,7 @@ class Photos extends MY_Controller {
 
 				$photo['content'] = base_url( $photo['content'] );
 				foreach ($photo as $k => $v) {
-					if ( !in_array($k, ['content', 'title', 'tags', 'pid']) ) 
+					if ( !in_array($k, ['content', 'title', 'tags', 'pid']) )
 						unset($photo[$k]);
 				}
 
@@ -190,6 +192,7 @@ class Photos extends MY_Controller {
 	 */
 	public function submitPhoto()
 	{
+		$this->output->enable_profiler(TRUE);
 		if ($this->validate() === true) {
 
 			$data = $this->input->post();
@@ -231,7 +234,7 @@ class Photos extends MY_Controller {
 			}
 			$data['tags'] = implode(',', $data['tags']);
 			$tagIds = $this->tag->get(sprintf('tag_name in (%s)', $data['tags']), 'tag_id');
-			
+
 			if ( !empty($tagIds) ) {
 				$this->load->model('PhotosTagsModel', 'pt');
 
@@ -271,9 +274,9 @@ class Photos extends MY_Controller {
 	private function upload($extData)
 	{
 		$config = [
-			'upload_path' 	 => './upload/photos',
+			'upload_path' 	=> realpath(APPPATH . '../upload/photos'),
 			'allowed_types' => 'gif|jpg|png',
-			'max_size'      => 2048,
+			'max_size'      => 10240,
 			'min_width'     => 400,
 			'min_height'    => 100,
 			'file_name' 	 => uniqid(),
@@ -285,7 +288,7 @@ class Photos extends MY_Controller {
 			$upload = $this->upload->data();
 			$thumbnail = $this->resizePhoto($upload['full_path'], [260, 315, 410], 'upload/photos/');
 
-			if ($thumbnail == true) {				
+			if ($thumbnail == true) {
 				$data = [
 					'uid' => $_COOKIE['uid'], // see who posts this photo
 					'size' => $upload['file_size'],

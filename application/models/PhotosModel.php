@@ -3,7 +3,7 @@
 class PhotosModel extends MY_Model {
 
 	protected $table = 'photos';
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -25,12 +25,16 @@ class PhotosModel extends MY_Model {
 	 */
 	public function getPhoto($keyword = '', $offset = 0)
 	{
+		$q = $this->db->query('select pid from ' . $this->table)->num_rows();
+
+		if (0 === $q) return null;
+
 		$q = $this->db->select('title, thumbnail, content, loved, loved_people, downloaded, pid, uid, slug_name, picture_profile, CONCAT_WS(" ", lname, fname) AS username')
 		->from($this->table)->join('user', 'uid')->join('photos_tags', 'pid')->join('tags', 'tag_id');
-		
+
 		if (is_array($keyword)) $q->where($keyword);
 		else if ($keyword !== '*' && $keyword !== '') $q->like('title', $keyword)->or_like('tag_name', $keyword);
-		
+
 		return $q->group_by('title')->order_by('pid', 'desc')->limit(12, $offset)->get()->result_array();
 	}
 

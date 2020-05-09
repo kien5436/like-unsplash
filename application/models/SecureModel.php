@@ -4,7 +4,7 @@
 class SecureModel extends CI_Model {
 
 	protected $table = 'secure';
-	
+
 	function __construct()
 	{
 		parent::__construct();
@@ -14,12 +14,12 @@ class SecureModel extends CI_Model {
 	{
 		$this->load->model('UserModel', 'user');
 		$this->load->model('ConstantsModel', 'const');
-		
+
 		if ( $this->isValidCookie() ) {
 			$role = $this->const->get(['cname' => 'role'], 'cvalue')[0]['cvalue'];
 			$role = json_decode($role, true);
 			$userRole = $this->user->get(['uid' => $_COOKIE['uid']], 'role')[0]['role'];
-			
+
 			return $role[$userRole] === 'admin';
 		}
 		return false;

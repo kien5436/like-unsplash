@@ -23,14 +23,17 @@ class TagsModel extends MY_Model {
 
 	public function randomTags()
 	{
+		$attempt = 0;
+
 		do {
-			$tags = $this->db->query('SELECT tag_name from tags as r1 
+			$attempt++;
+			$tags = $this->db->query('SELECT tag_name from tags as r1
 				join(SELECT CEIL(RAND() *
 				(SELECT MAX(tag_id) FROM tags)
 				) AS id) as r2
 				where r1.tag_id >= r2.id
 				order by r1.tag_id asc limit 20')->result_array();
-		} while (count($tags) < 20);
+		} while (count($tags) < 20 && $attempt < 3);
 
 		return $tags;
 	}

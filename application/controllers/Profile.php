@@ -64,13 +64,13 @@ class Profile extends MY_Controller {
 				]
 			],
 		];
-		
+
 		$this->form_validation->set_rules($config);
 
 		if ($this->form_validation->run() == true) {
-			 
+
 			$data['new'] = password_hash($data['new'], PASSWORD_DEFAULT, ['cost' => 10]);
-			
+
 			if ($this->user->update(['uid' => $_COOKIE['uid']], ['password' => $data['new']]) == true) {
 				$_SESSION['notif'] = $this->genNotif('Đổi mật khẩu thành công');
 				$cookie = ['pwd' => ['value' => $data['new'], 'expire' => strtotime('+30 days')]];
@@ -150,7 +150,7 @@ class Profile extends MY_Controller {
 
 		$this->form_validation->set_rules($config);
 
-		if ($this->form_validation->run() === true) {			
+		if ($this->form_validation->run() === true) {
 			$data = $this->input->post();
 			foreach ($data as &$value) $value = strip_tags($value);
 			$oldPP = null;
@@ -158,10 +158,10 @@ class Profile extends MY_Controller {
 			if ( is_uploaded_file($_FILES['pp']['tmp_name']) ) {
 				unset($config);
 				$config = [
-					'upload_path' 	 => './upload/picture_profiles',
+					'upload_path' 	=> realpath(APPPATH . '../upload/picture_profiles'),
 					'allowed_types' => 'gif|jpg|png',
 					'max_width'     => 260,
-					'file_name' 	 => uniqid(),
+					'file_name' 	 	=> uniqid(),
 				];
 
 				$this->load->library('upload', $config);
@@ -217,7 +217,7 @@ class Profile extends MY_Controller {
 			VENDOR.'js/user/settings.js'
 		];
 		$this->combineJS($modules, VENDOR.'js/user/settings.js', 0);
-		
+
 		$this->load->library('form_validation');
 		$this->load->model('SecureModel', 'secure');
 		$this->load->model('ConstantsModel', 'constant');
@@ -227,11 +227,11 @@ class Profile extends MY_Controller {
 		$header['isValidCookie'] = $this->secure->isValidCookie();
 		$header['granted'] = $this->secure->granted();
 		$user = $this->user->get(['uid' => $uid, 'slug_name' => $username], 'email, lname, fname, slug_name, picture_profile, sex, location, interests');
-		
+
 		if ($user == true && isset($_COOKIE['uid']) && $uid == $_COOKIE['uid']) {
 			$data = $user[0];
 			$data['doing'] = $this->doing;
-			$data['asex'] = json_decode( $this->constant->get(['cname' => 'sex'], 'cvalue')[0]['cvalue'] );
+			$data['asex'] = json_decode( $this->constant->get(['cname' => 'sex'], 'cvalue')[0]['cvalue'], true );
 
 			for ($i = 0; $i < count($data['asex']); $i++) {
 				if ($data['sex'] !== null && $data['sex'] == $i) {
@@ -266,7 +266,7 @@ class Profile extends MY_Controller {
 			];
 			$this->load->view('template/layout', $this->layout);
 		}
-		else show_404();		
+		else show_404();
 	}
 
 	public function loadViewProfile($username, $uid)
@@ -284,7 +284,7 @@ class Profile extends MY_Controller {
 
 		$user = $this->user->get(['uid' => $uid, 'slug_name' => $username], 'uid, slug_name, concat_ws(" ", lname, fname) as username, picture_profile, location, interests');
 		isset($_COOKIE['uid']) && $currentUser = $this->user->get(['uid' => $_COOKIE['uid']], 'picture_profile');
-		
+
 		$this->load->model('PhotosModel', 'photo');
 		$photos = $this->photo->getPhoto(['uid' => $uid]);
 
@@ -329,7 +329,7 @@ class Profile extends MY_Controller {
 				$photos['next'] = 12;
 				$photos['isValidCookie'] = $header['isValidCookie'];
 				$photos['granted'] = $this->secure->granted();
-				
+
 				$data['masonry'] = $this->load->view('template/masonry', ['photos' => $photos], true);
 				$data['modal'] = $this->load->view('template/modal', '', true);
 			}
